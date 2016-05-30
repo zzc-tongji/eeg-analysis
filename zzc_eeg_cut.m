@@ -1,7 +1,7 @@
 function eeg_fragment = zzc_eeg_cut(eeg_data, time_range, sample_rate)
 %CUT EEG DATA
 %
-%	eeg_fragment = zzc_eeg_cut(eeg_data, time_range, sample_rate)
+%   eeg_fragment = zzc_eeg_cut(eeg_data, time_range, sample_rate)
 %
 %   ----------
 %
