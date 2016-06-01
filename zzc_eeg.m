@@ -35,7 +35,7 @@ eeg = pop_resample(eeg, sample);
 eeg = pop_eegfiltnew(eeg, filter);
 
 % 3. get amplitude of selected band
-time = round(eeg.xmax);
+time = eeg.xmax;
 frame_number = floor((time - (frame_length - non_overlap_length)) / non_overlap_length);
 spectrum_mean = zeros(60, frame_number);
 for index_1 = 1 : 1 : frame_number
