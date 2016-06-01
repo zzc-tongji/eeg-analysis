@@ -11,7 +11,7 @@ eeg = EEG;
 % EEG name (displayed in topograph)
 eeg_name = eeg.setname;
 % new sampling rate
-sample = 250;
+sample_rate = 250;
 % filter (Hz)
 filter = [4, 50];
 % frame length (s)
@@ -27,10 +27,10 @@ music = eval(music_name);
 % use ICA
 enable_ica = 1;
 % output path of topograph (create new folder)
-output_path = [getenv('USERPROFILE'), '\Desktop\'];
+output_path = [getenv('USERPROFILE'), '\Desktop\Result\'];
 
 % 2. preprocess: resample & filter
-eeg = pop_resample(eeg, sample);
+eeg = pop_resample(eeg, sample_rate);
 eeg = pop_eegfiltnew(eeg, filter);
 
 % 3. get amplitude of selected band
@@ -181,7 +181,7 @@ clear m_file_path ced_file_path object_folder text_all textbox
 if enable_ica == 0
     clear ica_A ica_sig
 end
-clear eeg eeg_name sample filter frame_length non_overlap_length band ...
+clear eeg eeg_name sample_rate filter frame_length non_overlap_length band ...
     music music_name output_path enable_ica
 clear ica_number music_feature_number index_1 index_2
 disp('Finish.');
