@@ -1,7 +1,9 @@
 %   This script is used to analyze the correlation coefficient
 %       between EEG and music features.
 %
-%   Before running it, load data music features at first.
+%   Before running it, use 'eeglab' to callout the window of EEGLAB and then close it,
+%       otherwise an error will occur in preprocessing. And also, don't forget to
+%       load data of music features.
 %
 %   Running Environment: MATLAB R2012a, EEGLAB v12.0.1.0b, FastICA 2.5
 
@@ -27,17 +29,20 @@ music_name = 'A4';
 % music feature matrix
 music = eval(music_name);
 % output path of topograph (create new folder)
-output_path = [getenv('USERPROFILE'), '\Desktop\Result\'];
+output_path = [getenv('USERPROFILE'), '\Desktop\Result\20160428-zzc-music\'];
 % upper limit value of p
 corr_p_max = 0.01;
 % enable draw
 enable_draw = 1;
+% information
+information = '';
 
 % 2. preprocess: resample & filter
 eeg = eeg_checkset(eeg);
 eeg = pop_resample(eeg, sample_rate);
 eeg = eeg_checkset(eeg);
 eeg = pop_eegfiltnew(eeg, filter);
+eeg = eeg_checkset(eeg);
 
 clear filter;
 
@@ -131,11 +136,7 @@ clear result_index r c s;
 if (enable_draw)
     m_file_path = mfilename('fullpath');
     ced_file_path = [m_file_path(1 : strfind(m_file_path, mfilename()) - 1), '60_channels_map.ced'];
-    if enable_ica == 1
-        object_folder = [output_path, '[', eeg_name, '][', music_name, '][', sprintf('%1.3f', corr_p_max), '][ICA]\'];
-    else
-        object_folder = [output_path, '[', eeg_name, '][', music_name, '][', sprintf('%1.3f', corr_p_max), ']\'];
-    end
+    object_folder = [output_path, '[', eeg_name, '][', music_name, ']', information, '\'];
     mkdir(object_folder);
     for index_1 = 1 : 1 : ica_number
         % graph
@@ -211,7 +212,7 @@ save([object_folder, 'result.mat'], 'spectrum_mean', 'corr_p', ...
 
 clear eeg_name enable_ica music_name output_path ica_A ica_number ...
     index_1 index_2 music_feature_number enable_draw corr_p_max m_file_path ced_file_path ...
-    object_folder text_all text_index_begin text_line text_index_end text_all ...
+    object_folder information text_all text_index_begin text_line text_index_end text_all ...
     table_rank table_corr_p table_music_feature_no table_music_feature textbox;
 
 disp('Finish.');
