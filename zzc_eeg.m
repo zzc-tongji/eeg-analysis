@@ -5,8 +5,7 @@
 %
 %   Running Environment: MATLAB R2012a, EEGLAB v12.0.1.0b, FastICA 2.5
 
-% 1. clear & input
-zzc_eeg_clear;
+% 1. input
 % EEG structure
 eeg = EEG;
 % EEG name (displayed in topograph)
@@ -25,7 +24,7 @@ band = [8, 13];
 music_name = 'A4';
 % music feature matrix
 music = eval(music_name);
-% use ica
+% use ICA
 enable_ica = 1;
 % output path of topograph (create new folder)
 output_path = [getenv('USERPROFILE'), '\Desktop\'];
