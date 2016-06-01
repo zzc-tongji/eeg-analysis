@@ -72,7 +72,7 @@ end
 clear eeg sample_rate frame_length non_overlap_length band ica_sig time ...
     frame_number time_begin time_end eeg_fragment amplitude;
 
-% 5. caculate correlation coefficient
+% 5. calculate correlation coefficient
 spectrum_mean_frame_number = size(spectrum_mean, 2);
 music_frame_number = size(music, 1);
 if spectrum_mean_frame_number ~= music_frame_number
@@ -132,7 +132,7 @@ result_tip{2, 2} = corr_p_max;
 
 clear result_index r c s;
 
-% 8. draw topograph & save
+% 8. draw topography & save
 if (enable_draw)
     m_file_path = mfilename('fullpath');
     ced_file_path = [m_file_path(1 : strfind(m_file_path, mfilename()) - 1), '60_channels_map.ced'];
