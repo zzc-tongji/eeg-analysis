@@ -103,7 +103,7 @@ clear music spectrum_mean_frame_number music_frame_number caculate_number p;
 [~, rank_in_ica_no.music_feature_no, rank_in_ica_no.corr_p] = zzc_rank_sort_column(corr_p', 'min', 'not');
 
 % 7. select by p
-[r, c, ~] = find(rank_in_music_feature_no.corr_p < corr_p_max);
+[r, c, ~] = find(corr_p < corr_p_max);
 s = size(r, 1);
 result = cell(s + 1, 4);
 result{1, 1} = 'feature_no';
@@ -118,7 +118,7 @@ for index_1 = 1 : 1 : s
     result{index_1 + 1, 1} = c(index_1);
     result{index_1 + 1, 2} = title{1, c(index_1)};
     result{index_1 + 1, 3} = r(index_1);
-    result{index_1 + 1, 4} = rank_in_music_feature_no.corr_p(r(index_1), c(index_1));
+    result{index_1 + 1, 4} = corr_p(r(index_1), c(index_1));
 end
 result_tip = cell(2, 2);
 if enable_ica == 1
