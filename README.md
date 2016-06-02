@@ -49,6 +49,10 @@ Script 'zzc_eeg_epoch.m' is added. This script is used to epoch fragments from r
 
 Script 'zzc_eeg_clear.m' is also modified.  
 
+**version 2.1**  
+
+Now, script 'zzc_eeg.m' is able to automatically select and classify topographies into music features by p.  
+
 ### Other ###
 
 * All lines end up with CRLF (Windows).  
