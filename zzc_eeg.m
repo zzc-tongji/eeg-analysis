@@ -8,6 +8,12 @@
 %   Running Environment: MATLAB R2012a, EEGLAB v12.0.1.0b, FastICA 2.5
 
 % 1. input
+
+% music name (displayed in topograph)
+music_name = 'A4';
+% music feature matrix
+music = eval(music_name);
+
 % EEG structure
 eeg = pop_loadset('filename', 'zzc-A4-se.set', 'filepath', [getenv('USERPROFILE'), '\Desktop\EEG\20160428-zzc-music\']);
 % EEG name (displayed in topograph)
@@ -24,18 +30,18 @@ frame_length = 4;
 non_overlap_length = 1;
 % selected band
 band = [8, 13];
-% music name (displayed in topograph)
-music_name = 'A4';
-% music feature matrix
-music = eval(music_name);
-% output path of topograph (create new folder)
-output_path = [getenv('USERPROFILE'), '\Desktop\Result\20160428-zzc-music\'];
+
 % upper limit value of p
 corr_p_max = 0.01;
-% enable draw
-enable_draw = 1;
-% information
+
+% output path of topograph (create new folder)
+output_path = [getenv('USERPROFILE'), '\Desktop\Result\20160428-zzc-music\'];
+% information, which add to created folder
 information = '';
+% enable draw diagram
+enable_draw = 1;
+% enable draw selected diagram
+enable_draw_selected = 1;
 
 % 2. preprocess: resample & filter
 eeg = eeg_checkset(eeg);
@@ -129,15 +135,32 @@ end
 result_tip{1, 2} = ica_number;
 result_tip{2, 1} = 'corr_p_max';
 result_tip{2, 2} = corr_p_max;
+matrix_r_c = [r, c];
 
 clear result_index r c s;
 
-% 8. draw topography & save
+% 8. draw diagram of topography & save data
+
+% draw diagram
 if (enable_draw)
     m_file_path = mfilename('fullpath');
     ced_file_path = [m_file_path(1 : strfind(m_file_path, mfilename()) - 1), '60_channels_map.ced'];
-    object_folder = [output_path, '[', eeg_name, '][', music_name, ']', information, '\'];
-    mkdir(object_folder);
+    object_folder_name = ['[', eeg_name, '][', music_name, ']', information];
+    object_folder_path = [output_path, object_folder_name, '\'];
+    if exist(object_folder_path, 'dir') == 0
+        mkdir(object_folder_path);
+    end
+    if enable_draw_selected == 1
+        % prepare for drawing selected diagram
+        object_folder_for_selected = cell(music_feature_number);
+        for index_1 = 1 : 1 : music_feature_number
+            single_object_folder_for_selected = sprintf('%s[%02d][%s]\\', output_path, index_1, title{index_1});
+            object_folder_for_selected{index_1} = single_object_folder_for_selected;
+            if exist(single_object_folder_for_selected, 'dir') == 0
+                mkdir(single_object_folder_for_selected);
+            end
+        end
+    end
     for index_1 = 1 : 1 : ica_number
         % graph
         topoplot(ica_A(:, index_1), ced_file_path, 'electrodes','labels');
@@ -202,17 +225,26 @@ if (enable_draw)
         set(textbox, 'FontSize', 14);
         set(textbox, 'String', text_all);
         % save
-        saveas(gcf, [object_folder, sprintf('ica_%03d.png', index_1)], 'png');
+        saveas(gcf, [object_folder_path, sprintf('%sica_%03d.png', object_folder_name, index_1)], 'png');
+        if enable_draw_selected == 1
+            % draw selected diagram
+            music_feature_no = matrix_r_c(matrix_r_c(:, 1) == index_1, 2);
+            for index_2 = 1 : 1 : size(music_feature_no, 1)
+                saveas(gcf, [object_folder_for_selected{music_feature_no(index_2)}, sprintf('%sica_%03d.png', object_folder_name, index_1)], 'png');
+            end
+        end
         clf;
     end
     close;
 end
-save([object_folder, 'result.mat'], 'spectrum_mean', 'corr_p', ...
+% save data
+save([object_folder_path, 'result.mat'], 'spectrum_mean', 'corr_p', ...
     'rank_in_music_feature_no', 'rank_in_ica_no', 'result', 'result_tip');
 
 clear eeg_name enable_ica music_name output_path ica_A ica_number ...
     index_1 index_2 music_feature_number enable_draw corr_p_max m_file_path ced_file_path ...
     object_folder information text_all text_index_begin text_line text_index_end text_all ...
-    table_rank table_corr_p table_music_feature_no table_music_feature textbox;
+    table_rank table_corr_p table_music_feature_no table_music_feature textbox enable_draw_selected ...
+    matrix_r_c object_folder_for_selected single_object_folder_for_selected music_feature_no;
 
 disp('Finish.');
