@@ -164,6 +164,7 @@ if (enable_draw)
     for index_1 = 1 : 1 : ica_number
         % graph
         topoplot(ica_A(:, index_1), ced_file_path, 'electrodes','labels');
+        colorbar;
         % setting
         set(gcf, 'Position', [0, 0, 1300, 900]);
         set(gcf, 'PaperPositionMode', 'auto');
@@ -209,7 +210,7 @@ if (enable_draw)
             table_corr_p = rank_in_ica_no.corr_p(index_2, index_1);
             table_music_feature_no = rank_in_ica_no.music_feature_no(index_2, index_1);
             table_music_feature = title{1, table_music_feature_no};
-            text_line = sprintf('%02d %+1.4f\n   %s %02d', ...
+            text_line = sprintf('%02d %+1.10f\n   %s %02d', ...
                 table_rank, table_corr_p, table_music_feature, table_music_feature_no);
             text_index_end = text_index_begin + size(text_line, 2) + 1;
             text_all(text_index_begin : text_index_end) = [text_line, sprintf('\n'), sprintf('\n')];
