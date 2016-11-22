@@ -55,5 +55,5 @@ Now, script 'zzc_eeg.m' is able to automatically select and classify topographie
 
 ### Other ###
 
-* All lines end up with CRLF (Windows).  
+* There is a CRLF (Windows) at the end of each line.  
 * File '60_channels_map.ced' is used to draw topography.  
