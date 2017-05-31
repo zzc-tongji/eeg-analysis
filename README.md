@@ -53,7 +53,7 @@ Script 'zzc_eeg_clear.m' is also modified.
 
 Now, script 'zzc_eeg.m' is able to automatically select and classify topographies into music features by p.  
 
-### Other ###
+### Others ###
 
 * There is a CRLF (Windows) at the end of each line.  
 * File '60_channels_map.ced' is used to draw topography.  
